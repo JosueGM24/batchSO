@@ -1,39 +1,45 @@
 #!/bin/bash
 
-# Función para convertir fecha y hora a segundos desde el epoch
-date_to_seconds() {
-    local date_string=$1
-    date -u -d "$date_string" +"%s" 2>/dev/null
+# Función para convertir una fecha a segundos desde el epoch (1970-01-01 00:00:00 UTC)
+function fecha_a_segundos() {
+    date -d "$1" +%s
 }
 
-# Función para obtener meses, días y horas a partir de la diferencia en segundos
-obtener_meses_dias_horas() {
-    local time_diff=$1
-    local meses=$((time_diff / (30 * 24 * 60 * 60)))
-    local dias=$(( (time_diff % (30 * 24 * 60 * 60)) / (24 * 60 * 60) ))
-    local horas=$(( (time_diff % (24 * 60 * 60)) / (60 * 60) ))
-    echo "$meses $dias $horas"
+# Función para calcular la diferencia entre dos fechas en segundos
+function calcular_diferencia() {
+    fecha_inicial=$1
+    fecha_final=$2
+
+    segundos_inicial=$(fecha_a_segundos "$fecha_inicial")
+    segundos_final=$(fecha_a_segundos "$fecha_final")
+
+    echo $((segundos_final - segundos_inicial))
 }
 
-# Pedir fecha inicial
-read -p "Ingresa la fecha inicial (dd/mm/yyyy-HH:MM:SS): " start_date
+# Función para convertir segundos a días, horas y meses
+function segundos_a_dias_horas_meses() {
+    segundos=$1
 
-# Pedir fecha final
-read -p "Ingresa la fecha final (dd/mm/yyyy-HH:MM:SS): " end_date
+    meses=$((segundos / (30*24*60*60)))
+    segundos=$((segundos % (30*24*60*60)))
 
-# Convertir fechas a segundos
-start_seconds=$(date_to_seconds "$start_date")
-end_seconds=$(date_to_seconds "$end_date")
+    dias=$((segundos / (24*60*60)))
+    segundos=$((segundos % (24*60*60)))
 
-# Calcular la diferencia en segundos
-time_diff=$((end_seconds - start_seconds))
+    horas=$((segundos / (60*60)))
+    segundos=$((segundos % (60*60)))
 
-# Obtener meses, días y horas de la diferencia
-meses_dias_horas=$(obtener_meses_dias_horas "$time_diff")
-read meses dias horas <<< "$meses_dias_horas"
+    echo "Días: $dias"
+    echo "Horas: $horas"
+    echo "Meses: $meses"
+}
 
-# Mostrar el resultado
-echo "El lapso de tiempo entre las fechas es de:"
-echo "Meses: $meses"
-echo "Días: $dias"
-echo "Horas: $horas"
+# Pedir fechas al usuario
+read -p "Ingrese la fecha inicial (formato dd/mm/yyyy-hh:mm:ss): " fecha_inicial
+read -p "Ingrese la fecha final (formato dd/mm/yyyy-hh:mm:ss): " fecha_final
+
+# Calcular diferencia en segundos
+diferencia_segundos=$(calcular_diferencia "$fecha_inicial" "$fecha_final")
+
+# Convertir segundos a días, horas y meses y mostrar el resultado
+segundos_a_dias_horas_meses $diferencia_segundos
