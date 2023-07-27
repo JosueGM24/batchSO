@@ -10,8 +10,8 @@ date_to_seconds() {
 obtener_meses_dias_horas() {
     local time_diff=$1
     local meses=$((time_diff / (30 * 24 * 60 * 60)))
-    local dias=$((time_diff / (24 * 60 * 60)))
-    local horas=$((time_diff / (60 * 60)))
+    local dias=$(( (time_diff % (30 * 24 * 60 * 60)) / (24 * 60 * 60) ))
+    local horas=$(( (time_diff % (24 * 60 * 60)) / (60 * 60) ))
     echo "$meses $dias $horas"
 }
 
