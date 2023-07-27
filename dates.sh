@@ -6,19 +6,16 @@ function calcular_diferencia() {
     fecha_final=$2
 
     # Convertir fechas a timestamp (segundos desde el epoch)
-    timestamp_inicial=$(date -d "$fecha_inicial" +%s)
-    timestamp_final=$(date -d "$fecha_final" +%s)
+    timestamp_inicial=$(date -d "${fecha_inicial:0:10} ${fecha_inicial:11}" +%s)
+    timestamp_final=$(date -d "${fecha_final:0:10} ${fecha_final:11}" +%s)
 
     # Calcular la diferencia en segundos
     diferencia_segundos=$((timestamp_final - timestamp_inicial))
 
-    # Calcular meses y días
-    meses=$((diferencia_segundos / (30 * 24 * 60 * 60))
-    dias=$((diferencia_segundos / (24 * 60 * 60))
-
-    # Calcular horas
-    segundos_restantes=$((diferencia_segundos % (24 * 60 * 60))
-    horas=$((segundos_restantes / (60 * 60))
+    # Calcular meses, días y horas
+    meses=$((diferencia_segundos / (30 * 24 * 60 * 60)))
+    dias=$((diferencia_segundos / (24 * 60 * 60)))
+    horas=$((diferencia_segundos / (60 * 60)))
 
     echo "Días: $dias"
     echo "Horas: $horas"
