@@ -20,8 +20,9 @@ read -p "Ingresa un número objetivo: " numero_objetivo
 
 # Función para generar las combinaciones que suman el número objetivo
 function find_combinations {
-  local numero_objetivo=$1
-  local numeros=("${@:2}")
+  local objetivo=$1
+  shift
+  local numeros=("$@")
   local n=${#numeros[@]}
   local combinacion=()
 
@@ -31,21 +32,18 @@ function find_combinations {
       ((sum+=num))
     done
 
-    if [ $sum -eq $numero_objetivo ]; then
+    if [ $sum -eq $objetivo ]; then
       echo "Combinación encontrada: ${combinacion[*]}"
-    elif [ $sum -lt $numero_objetivo ]; then
+    elif [ $sum -lt $objetivo ]; then
       for ((i=$1; i<$n; i++)); do
         combinacion+=(${numeros[i]})
-        backtrack $((i+1))
+        backtrack $i
         unset 'combinacion[${#combinacion[@]}-1]'
       done
     fi
   }
 
-  for ((i=0; i<$n; i++)); do
-    combinacion=(${numeros[i]})
-    backtrack $((i+1))
-  done
+  backtrack 0
 }
 
 echo "Buscando combinaciones que suman $numero_objetivo con los números aleatorios..."
