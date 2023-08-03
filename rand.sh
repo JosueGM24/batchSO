@@ -36,9 +36,11 @@ function find_combinations {
       echo "Combinación encontrada: ${combinacion[*]}"
     elif [ $sum -lt $objetivo ]; then
       for ((i=$1; i<$n; i++)); do
-        combinacion+=(${numeros[i]})
-        backtrack $i
-        unset 'combinacion[${#combinacion[@]}-1]'
+        if [[ " ${combinacion[@]} " != *" ${numeros[i]} "* ]]; then
+          combinacion+=(${numeros[i]})
+          backtrack $i
+          unset 'combinacion[${#combinacion[@]}-1]'
+        fi
       done
     fi
   }
