@@ -11,12 +11,19 @@ done
 
 echo "Números generados aleatoriamente: ${numeros[@]}"
 
-# Ordenar el arreglo de forma ascendente
-sorted_numeros=($(printf '%s\n' "${numeros[@]}" | sort -n))
-
 # Encontrar los dos números menores
-menor1=${sorted_numeros[0]}
-menor2=${sorted_numeros[1]}
+menor1=${numeros[0]}
+menor2=${numeros[0]}
+i=1
+while [ $i -lt $cantidad_numeros ]; do
+  if [ ${numeros[i]} -lt $menor1 ]; then
+    menor2=$menor1
+    menor1=${numeros[i]}
+  elif [ ${numeros[i]} -lt $menor2 ] && [ ${numeros[i]} -ne $menor1 ]; then
+    menor2=${numeros[i]}
+  fi
+  ((i++))
+done
 
 echo "Los dos números menores son: $menor1 y $menor2"
 
