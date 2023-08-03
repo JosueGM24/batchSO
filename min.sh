@@ -6,7 +6,7 @@ read -p "Ingresa la cantidad de números: " cantidad_numeros
 # Generar la cantidad de números aleatorios y guardarlos en un arreglo
 numeros=()
 for ((i=0; i<cantidad_numeros; i++)); do
-  numeros[i]=$((RANDOM % 100))  # Generar números aleatorios entre 0 y 99
+  numeros[i]=$((RANDOM % 9))  # Generar números aleatorios entre 0 y 99
 done
 
 echo "Números generados aleatoriamente: ${numeros[@]}"
