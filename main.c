@@ -5,21 +5,40 @@
 typedef struct {
     float real;
     float imag;
-} ComplexNumber;
+} 
+
+ComplexNumber;ComplexNumber parseComplex(const char *input) {
+    ComplexNumber num;
+    char *endptr;
+    
+    num.real = strtof(input, &endptr);
+    if (*endptr == '+') {
+        num.imag = strtof(endptr + 1, NULL);
+    } else if (*endptr == '-') {
+        num.imag = strtof(endptr, NULL);
+    } else {
+        num.imag = 0;
+    }
+    
+    return num;
+}
 
 
 int main() {
+    char input1[50], input2[50];
     ComplexNumber num1, num2, result;
     int choice;
 
-    printf("Ingrese la parte real e imaginaria del primer número (ejemplo: 2 3): ");
-    scanf("%f %f", &num1.real, &num1.imag);
-
-    printf("Ingrese la parte real e imaginaria del segundo número (ejemplo: 1 2): ");
-    scanf("%f %f", &num2.real, &num2.imag);
+    printf("Ingrese el primer numero complejo (ejemplo: 2+3i): ");
+    scanf("%s", input1);
+    num1 = parseComplex(input1);
+    
+    printf("Ingrese el segundo numero complejo (ejemplo: 1-2i): ");
+    scanf("%s", input2);
+    num2 = parseComplex(input2);
 
     printf("Seleccione la operación a realizar:\n");
-    printf("1. Suma\n2. Resta\n3. Multiplicación\n4. División\n");
+    printf("1. Suma\n2. Resta\n3. Multiplicacion\n4. Division\n");
     scanf("%d", &choice);
 
     switch (choice) {
@@ -33,14 +52,14 @@ int main() {
             break;
         case 3:
             result = multiply(num1, num2);
-            printf("Resultado de la multiplicación: %.2f + %.2fi\n", result.real, result.imag);
+            printf("Resultado de la multiplicacion: %.2f + %.2fi\n", result.real, result.imag);
             break;
         case 4:
             result = divide(num1, num2);
-            printf("Resultado de la división: %.2f + %.2fi\n", result.real, result.imag);
+            printf("Resultado de la division: %.2f + %.2fi\n", result.real, result.imag);
             break;
         default:
-            printf("Opción inválida.\n");
+            printf("Opcion invalida.\n");
     }
 
     return 0;
