@@ -1,11 +1,25 @@
 #!/bin/bash
 
-# Función para multiplicar dos polinomios
+# Función para multiplicar dos polinomios en formato (x+a)
 multiply_polynomials() {
-    local result="1"
-    for expr in "$@"; do
-        result=$(echo "scale=10; $result * ($expr)" | bc)
+    local result=""
+
+    # Iterar a través de los factores y sumar términos
+    for factor in "$@"; do
+        term=""
+        if [[ $factor =~ ^\([[:space:]]*x[[:space:]]*\+[[:space:]]*([0-9-]+)[[:space:]]*\)$ ]]; then
+            coefficient="${BASH_REMATCH[1]}"
+            if [ "$coefficient" -gt 0 ]; then
+                term="+${coefficient}x"
+            elif [ "$coefficient" -lt 0 ]; then
+                term="${coefficient}x"
+            fi
+        fi
+        result="${result}${term}"
     done
+
+    # Eliminar el primer signo de suma si existe
+    result="${result#?}"
     echo "$result"
 }
 
