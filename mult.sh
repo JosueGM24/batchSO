@@ -17,10 +17,15 @@ multiply_polynomials() {
         result="${result}${term}"
     done
 
+    # Agregar el término constante si es necesario
+    if [[ "$result" != "" ]]; then
+        result="${result}+"
+    fi
+    result="${result}${BASH_REMATCH[1]}"
+
     # Eliminar el primer signo de suma si existe y ajustar el formato
     result="${result#?}"
     result="${result//x^1/x}"
-    result="${result//x+/+x}"
     echo "$result"
 }
 
