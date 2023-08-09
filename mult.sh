@@ -2,9 +2,9 @@
 
 # Función para multiplicar dos polinomios
 multiply_polynomials() {
-    local result=""
+    local result="1"
     for expr in "$@"; do
-        result=$(echo "$result * ($expr)" | bc -l)
+        result=$(echo "scale=10; $result * ($expr)" | bc)
     done
     echo "$result"
 }
