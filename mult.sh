@@ -4,9 +4,8 @@
 multiply_polynomials() {
     local result=""
 
-    # Iterar a través de los factores y sumar términos
+    # Iterar a través de los factores y construir el polinomio resultante
     for factor in "$@"; do
-        term=""
         if [[ $factor =~ ^\([[:space:]]*x[[:space:]]*\+[[:space:]]*([0-9-]+)[[:space:]]*\)$ ]]; then
             coefficient="${BASH_REMATCH[1]}"
             if [ "$coefficient" -gt 0 ]; then
@@ -18,8 +17,10 @@ multiply_polynomials() {
         result="${result}${term}"
     done
 
-    # Eliminar el primer signo de suma si existe
+    # Eliminar el primer signo de suma si existe y ajustar el formato
     result="${result#?}"
+    result="${result//x^1/x}"
+    result="${result//x+/+x}"
     echo "$result"
 }
 
